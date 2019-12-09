@@ -1,10 +1,28 @@
-[TOC]
+## 目录
 
-#### 3. 数组中重复的数字
+- [3. 数组中重复的数字](#id3)
+  - [3.1 寻找重复数 No.287（中等）](id31)
+  - [3.2 存在重复元素 No.217（简单）](#id32)
+  - [3.3 存在重复元素 II No.219（简单）](id33)
+
+- [4. 二维数组中的查找](id4)
+  - [4.1 搜索二维矩阵 No.74（中等）](id41)
+  - [4.2 搜索二维矩阵II No.240（中等）](id42)
+- [5. 替换空格](id5)
+- [6. 从头到尾打印链表](id6)
+  - [6.1 反转链表 No.206 （简单）](id61)
+  - [6.2 反转链表II No.92（中等）](id62)
+- [7. 重建二叉树](id7)
+  - [7.1 从前序与中序遍历序列构造二叉树 No.105（中等）](id71)
+  - [7.2 从中序与后序遍历序列构造二叉树 No.106（中等）](id72)
+
+
+
+#### <span id = 'id3'>3. 数组中重复的数字</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 287，也就是寻找重复数。
 
-##### 3.1 [寻找重复数 No.287（中等） ](https://leetcode-cn.com/problems/find-the-duplicate-number/)
+##### <span id = 'id31'>3.1 [寻找重复数 No.287（中等） ](https://leetcode-cn.com/problems/find-the-duplicate-number/)</span>
 
 > 给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。
 
@@ -80,7 +98,7 @@ class Solution:
 
 <font color = blue>时间复杂度$O(\log{n})\cdot O(n)=O(n\log{n})$，空间复杂度$O(1)$</font>
 
-##### 3.2 [存在重复元素 No.217（简单）](https://leetcode-cn.com/problems/contains-duplicate/)
+##### <span id = 'id32'>3.2 [存在重复元素 No.217（简单）](https://leetcode-cn.com/problems/contains-duplicate/)</span>
 
 这个题目与287的区别在于，该题目中没有再限制原素中每个值的范围，也就是说可以为负整数，或者大于n。
 
@@ -111,7 +129,7 @@ class Solution:
 
 <font color = blue>时间复杂度 $O(n)$，空间复杂度$O(n)$</font>
 
-##### 3.3 [存在重复元素 II No.219（简单）](https://leetcode-cn.com/problems/contains-duplicate-ii/)
+##### <span id = 'id33'>3.3 [存在重复元素 II No.219（简单）](https://leetcode-cn.com/problems/contains-duplicate-ii/)</span>
 
 > 给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 nums [i] = nums [j]，并且 i 和 j 的差的绝对值最大为 k。
 >
@@ -136,11 +154,11 @@ class Solution:
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度为$O(n)$ </font>
 
-#### 4. 二维数组中的查找
+#### <span id = 'id4'>4. 二维数组中的查找</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 74，也就是搜索二维矩阵。
 
-##### 4.1 [搜索二维矩阵 No.74（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix/)
+##### <span id = 'id41'>4.1 [搜索二维矩阵 No.74（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix/)</span>
 
 > 编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
 >
@@ -175,7 +193,7 @@ class Solution:
 
 <font color = blue>当目标值为二维数组最后一个元素时情况最差，所以平均时间复杂度为$O(n^2)$，空间复杂度为$O(1)$</font>
 
-##### 4.2 [搜索二维矩阵 II No.240（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)
+##### <span id = 'id42'>4.2 [搜索二维矩阵 II No.240（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)</span>
 
 > 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target。该矩阵具有以下特性：
 >
@@ -184,7 +202,7 @@ class Solution:
 
 这个题目和4.1是一样的解法，直接把4.1的代码复制过去就能通过。
 
-#### 5. 替换空格
+#### <span id = 'id5'>5. 替换空格</span>
 
 该题目在LeetCode上还没找到对应题目。
 
@@ -221,11 +239,11 @@ def replaceBlank(sentence, r='20%'):
 
 <font color = blue>时间复杂度为$O(n*m)$，其中$m$是这个替换串的长度；空间复杂度在这个代码中是$O(n+m*num\_blank)$</font>
 
-#### 6. 从头到尾打印链表
+#### <span id = 'id6'>6. 从头到尾打印链表</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 206，也就是反转链表。
 
-##### 6.1 [反转链表 No.206（简单）](https://leetcode-cn.com/problems/reverse-linked-list/)
+##### <span id = 'id61'>6.1 [反转链表 No.206（简单）](https://leetcode-cn.com/problems/reverse-linked-list/)</span>
 
 > 反转一个单链表
 >
@@ -266,7 +284,7 @@ def reverse_list(h):
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度为$O(1)$</font>
 
-##### 6.2 [反转链表 II No.92（中等）](https://leetcode-cn.com/problems/reverse-linked-list-ii/)
+##### <span id = 'id62'>6.2 [反转链表 II No.92（中等）](https://leetcode-cn.com/problems/reverse-linked-list-ii/)</span>
 
 > 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
 >
@@ -313,11 +331,11 @@ class Solution:
 
 <font color = blue>时间复杂度最坏为全部反转，因此平均时间复杂度为$O(n)$，空间复杂度为$O(n-m)$</font>
 
-#### 7. 重建二叉树
+#### <span id = "id7">7. 重建二叉树</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 105，也就是从前序与中序遍历构造二叉树。
 
-##### 7.1 [从前序与中序遍历序列构造二叉树 No.105（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+##### <span id = 'id71'>7.1 [从前序与中序遍历序列构造二叉树 No.105（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)</span>
 
 **方法一：**
 
@@ -337,7 +355,7 @@ class Solution:
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度也为$O(n)$，$n$表示节点数。</font>
 
-##### 7.2 [从中序与后序遍历序列构造二叉树 No. 106（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+##### <span id = 'id72'>7.2 [从中序与后序遍历序列构造二叉树 No. 106（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)</span>
 
 **方法一：**
 
