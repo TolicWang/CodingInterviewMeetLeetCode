@@ -16,6 +16,15 @@
   - [7.1 从前序与中序遍历序列构造二叉树 No.105（中等）](#id71)
   - [7.2 从中序与后序遍历序列构造二叉树 No.106（中等）](#id72)
 
+- [8. 二叉树的下一个节点](#id8)
+- [9. 用两个栈实现队列](#id9)
+  - [ 用栈实现队列 No.232（简单）](#id91)
+  - [用队列实现栈 No.225（简单）](#id92)
+
+
+
+
+
 
 
 #### <span id = 'id3'>3. 数组中重复的数字</span>
@@ -373,7 +382,127 @@ class Solution:
         return root
 ```
 
+#### <span id = "id8">8. 二叉树的下一个节点</span>
 
+该题目在LeetCode上还没找到对应题目，可以用[牛客网上的来代替](https://www.nowcoder.com/questionTerminal/9023a0c988684a53960365b889ceaf5e)。
+
+**方法一：**
+
+结题方案和书上的一样，分为三种情况：①有右子树；②没有右子树但父节点的左节点是它；③算是②的一个扩展，所以代码里面就分了两种情况；
+
+```python
+class Solution:
+    def GetNext(self, pNode):
+        # write code here
+        if not pNode:
+            return pNode
+        if pNode.right:# 如果有右子树
+            p = pNode.right
+            while p.left:
+                p = p.left
+            return p
+        else:
+            while pNode.next:
+                if pNode.next.left == pNode:
+                    return pNode.next
+                pNode = pNode.next
+            return None
+```
+
+<font color = blue>时间复杂度最坏情况下为$O(\log{n})$，即遍历整个树深度的情况，所以平均时间复杂度为$O(\log{n})$；空间复杂度为$O(1)$。</font>
+
+#### <span id = "id9">9. 用两个栈实现队列</span>
+
+该题目在LeetCode上最相近的题目为：leetcode 232，也就是用栈实现队列。
+
+##### <span id = "id91">9.1 [ 用栈实现队列 No.232（简单）](https://leetcode-cn.com/problems/implement-queue-using-stacks/)</span>
+
+队列的特点是先进先出，而栈的特点是先进后出，所以用两个栈来实现队列的思路，就是在出队的时候通过两个栈来进行”倒腾“（同剑指Offer上一致）。
+
+**方法一：**
+
+```python
+class MyQueue:
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.s1 = []
+        self.s2 = []
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        while self.s2:# 如果s2不为空
+            t = self.s2.pop()
+            self.s1.append(t)
+        self.s1.append(x)
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        while self.s1:# 如果s1不为空
+            t = self.s1.pop()
+            self.s2.append(t)
+        return self.s2.pop()
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        while self.s1:# 如果s1不为空
+            t = self.s1.pop()
+            self.s2.append(t)
+        return self.s2[-1]
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        return len(self.s1) ==0 and len(self.s2) ==0
+```
+
+##### <span id = "id92">9.2 [用队列实现栈 No.225（简单）](https://leetcode-cn.com/problems/implement-stack-using-queues/)</span>
+
+用队列来实现栈，这时候就不要用两个队列来实现了，只需要一个队列外加一个长度就可以。其思路就是，入栈的时候直接往队列里面添加就行，但是出栈的时候依次将队列里的前n-1个元素出队，依次加入到队列末尾就行，此时队列的队首就是栈顶元素。
+
+**方法一：**
+
+```python
+class MyStack:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.quene = []
+        self.length = 0  
+    def push(self, x: int) -> None:
+        """
+        Push element x onto stack.
+        """
+        self.quene.append(x)
+        self.length += 1  
+    def pop(self) -> int:
+        """
+        Removes the element on top of the stack and returns that element.
+        """
+        for _ in range(self.length - 1):
+            t = self.quene.pop(0)
+            self.quene.append(t)
+        self.length -= 1
+        return self.quene.pop(0)
+    def top(self) -> int:
+        """
+        Get the top element.
+        """
+        t = self.pop()
+        self.push(t)
+        return t
+    def empty(self) -> bool:
+        """
+        Returns whether the stack is empty.
+        """
+        return self.length < 1
+```
 
 
 
