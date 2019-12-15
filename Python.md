@@ -1,10 +1,15 @@
 ## 目录
 
+- [2. 排序算法](#id2)
+  - [2.1 冒泡排序](#id21)
+  - [2.2 选择排序](#id22)
+  - [2.3 插入排序](#id23)
+  - [2.4 快速排序](#id24)
+
 - [3. 数组中重复的数字](#id3)
   - [3.1 寻找重复数 No.287（中等）](#id31)
   - [3.2 存在重复元素 No.217（简单）](#id32)
   - [3.3 存在重复元素 II No.219（简单）](#id33)
-
 - [4. 二维数组中的查找](#id4)
   - [4.1 搜索二维矩阵 No.74（中等）](#id41)
   - [4.2 搜索二维矩阵II No.240（中等）](#id42)
@@ -15,7 +20,6 @@
 - [7. 重建二叉树](#id7)
   - [7.1 从前序与中序遍历序列构造二叉树 No.105（中等）](#id71)
   - [7.2 从中序与后序遍历序列构造二叉树 No.106（中等）](#id72)
-
 - [8. 二叉树的下一个节点](#id8)
 - [9. 用两个栈实现队列](#id9)
   - [ 用栈实现队列 No.232（简单）](#id91)
@@ -23,15 +27,92 @@
 
 
 
+### <span id = 'id2'>2. 排序算法</span>
+
+#### <span id = 'id21'>2.1 冒泡排序</span>
+
+```python
+def bubble_sort(nums):
+    n = len(nums)
+    if n < 2:
+        return
+    for i in range(n - 1):
+        is_sorted = True
+        for j in range(n - i - 1):
+            if nums[j + 1] < nums[j]:
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+                is_sorted = False
+        if is_sorted:
+            break
+```
+
+**复杂度分析：**当数组一开始就有序时，此时的时间复杂度最低为$O(n)$，即只需要遍历一次即可；当数组初始为逆序时，此时的时间复杂度最高为$O(n^2)$；所以冒泡排序的平均时间复杂度为$O(n^2)$，空间复杂度为$O(1)$。
+
+#### <span id = 'id22'>2.2 选择排序</span>
+
+```python
+def select_sort(nums):
+    n = len(nums)
+    if n < 2:
+        return
+    for i in range(n-1):
+        mid_loc = i
+        for j in range(i+1,n):
+            if nums[mid_loc] > nums[j]:
+                mid_loc = j
+        nums[mid_loc],nums[i] = nums[i],nums[mid_loc]
+```
+
+**复杂度分析：**由于选择排序算法每一轮都是要找当前最小（或最大）的值，因此都要挨个的进行比较，所以选择排序算法的时间复杂度在各种情况下均为$O(n^2)$，空间复杂度为$O(1)$。
+
+#### <span id = 'id23'>2.3 插入排序</span>
+
+```python
+def insert_sort(nums):
+    n = len(nums)
+    if n < 2:
+        return
+    for i in range(n-1):
+        for j in range(i,-1,-1):
+            if nums[j+1] < nums[j]:
+                nums[j],nums[j+1] = nums[j+1],nums[j]
+            else:
+                break
+```
+
+**复杂度分析：**当数组一开始就有序时，此时的时间复杂度最低为$O(n)$，即只需要遍历一次即可；当数组初始为逆序时，此时的时间复杂度最高为$O(n^2)$；所以插入排序算法的时间复杂度为$O(n^2)$，空间复杂度为$O(1)$。
+
+#### <span id = 'id24'>2.4 快速排序</span>
+
+**方法一：**
+
+```python
+def quick_sort(nums):
+    n = len(nums)
+    if n < 2:
+        return nums
+    mid = nums[n // 2]
+    left, right = [], []
+    nums.remove(mid)
+    for item in nums:
+        if item > mid:
+            right.append(item)
+        else:
+            left.append(item)
+    return quick_sort(left) + [mid] + quick_sort(right)
+```
+
+**复杂度分析：**时间复杂度为$O(n\log{n})$，空间复杂度$O(n\log{n})$。虽然这种实现代码简单，但空间复杂度却不是最优。
+
+**方法二：**
 
 
 
-
-#### <span id = 'id3'>3. 数组中重复的数字</span>
+### <span id = 'id3'>3. 数组中重复的数字</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 287，也就是寻找重复数。
 
-##### <span id = 'id31'>3.1 [寻找重复数 No.287（中等） ](https://leetcode-cn.com/problems/find-the-duplicate-number/)</span>
+#### <span id = 'id31'>3.1 [寻找重复数 No.287（中等） ](https://leetcode-cn.com/problems/find-the-duplicate-number/)</span>
 
 > 给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。
 
@@ -107,7 +188,7 @@ class Solution:
 
 <font color = blue>时间复杂度$O(\log{n})\cdot O(n)=O(n\log{n})$，空间复杂度$O(1)$</font>
 
-##### <span id = 'id32'>3.2 [存在重复元素 No.217（简单）](https://leetcode-cn.com/problems/contains-duplicate/)</span>
+#### <span id = 'id32'>3.2 [存在重复元素 No.217（简单）](https://leetcode-cn.com/problems/contains-duplicate/)</span>
 
 这个题目与287的区别在于，该题目中没有再限制原素中每个值的范围，也就是说可以为负整数，或者大于n。
 
@@ -138,7 +219,7 @@ class Solution:
 
 <font color = blue>时间复杂度 $O(n)$，空间复杂度$O(n)$</font>
 
-##### <span id = 'id33'>3.3 [存在重复元素 II No.219（简单）](https://leetcode-cn.com/problems/contains-duplicate-ii/)</span>
+#### <span id = 'id33'>3.3 [存在重复元素 II No.219（简单）](https://leetcode-cn.com/problems/contains-duplicate-ii/)</span>
 
 > 给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 nums [i] = nums [j]，并且 i 和 j 的差的绝对值最大为 k。
 >
@@ -163,11 +244,11 @@ class Solution:
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度为$O(n)$ </font>
 
-#### <span id = 'id4'>4. 二维数组中的查找</span>
+### <span id = 'id4'>4. 二维数组中的查找</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 74，也就是搜索二维矩阵。
 
-##### <span id = 'id41'>4.1 [搜索二维矩阵 No.74（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix/)</span>
+#### <span id = 'id41'>4.1 [搜索二维矩阵 No.74（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix/)</span>
 
 > 编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
 >
@@ -202,7 +283,7 @@ class Solution:
 
 <font color = blue>当目标值为二维数组最后一个元素时情况最差，所以平均时间复杂度为$O(n^2)$，空间复杂度为$O(1)$</font>
 
-##### <span id = 'id42'>4.2 [搜索二维矩阵 II No.240（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)</span>
+#### <span id = 'id42'>4.2 [搜索二维矩阵 II No.240（中等）](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)</span>
 
 > 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target。该矩阵具有以下特性：
 >
@@ -211,7 +292,7 @@ class Solution:
 
 这个题目和4.1是一样的解法，直接把4.1的代码复制过去就能通过。
 
-#### <span id = 'id5'>5. 替换空格</span>
+### <span id = 'id5'>5. 替换空格</span>
 
 该题目在LeetCode上还没找到对应题目。
 
@@ -248,11 +329,11 @@ def replaceBlank(sentence, r='20%'):
 
 <font color = blue>时间复杂度为$O(n*m)$，其中$m$是这个替换串的长度；空间复杂度在这个代码中是$O(n+m*num\_blank)$</font>
 
-#### <span id = 'id6'>6. 从头到尾打印链表</span>
+### <span id = 'id6'>6. 从头到尾打印链表</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 206，也就是反转链表。
 
-##### <span id = 'id61'>6.1 [反转链表 No.206（简单）](https://leetcode-cn.com/problems/reverse-linked-list/)</span>
+#### <span id = 'id61'>6.1 [反转链表 No.206（简单）](https://leetcode-cn.com/problems/reverse-linked-list/)</span>
 
 > 反转一个单链表
 >
@@ -293,7 +374,7 @@ def reverse_list(h):
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度为$O(1)$</font>
 
-##### <span id = 'id62'>6.2 [反转链表 II No.92（中等）](https://leetcode-cn.com/problems/reverse-linked-list-ii/)</span>
+#### <span id = 'id62'>6.2 [反转链表 II No.92（中等）](https://leetcode-cn.com/problems/reverse-linked-list-ii/)</span>
 
 > 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
 >
@@ -340,11 +421,11 @@ class Solution:
 
 <font color = blue>时间复杂度最坏为全部反转，因此平均时间复杂度为$O(n)$，空间复杂度为$O(n-m)$</font>
 
-#### <span id = "id7">7. 重建二叉树</span>
+### <span id = "id7">7. 重建二叉树</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 105，也就是从前序与中序遍历构造二叉树。
 
-##### <span id = 'id71'>7.1 [从前序与中序遍历序列构造二叉树 No.105（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)</span>
+#### <span id = 'id71'>7.1 [从前序与中序遍历序列构造二叉树 No.105（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)</span>
 
 **方法一：**
 
@@ -364,7 +445,7 @@ class Solution:
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度也为$O(n)$，$n$表示节点数。</font>
 
-##### <span id = 'id72'>7.2 [从中序与后序遍历序列构造二叉树 No. 106（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)</span>
+#### <span id = 'id72'>7.2 [从中序与后序遍历序列构造二叉树 No. 106（中等）](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)</span>
 
 **方法一：**
 
@@ -382,7 +463,7 @@ class Solution:
         return root
 ```
 
-#### <span id = "id8">8. 二叉树的下一个节点</span>
+### <span id = "id8">8. 二叉树的下一个节点</span>
 
 该题目在LeetCode上还没找到对应题目，可以用[牛客网上的来代替](https://www.nowcoder.com/questionTerminal/9023a0c988684a53960365b889ceaf5e)。
 
@@ -411,11 +492,11 @@ class Solution:
 
 <font color = blue>时间复杂度最坏情况下为$O(\log{n})$，即遍历整个树深度的情况，所以平均时间复杂度为$O(\log{n})$；空间复杂度为$O(1)$。</font>
 
-#### <span id = "id9">9. 用两个栈实现队列</span>
+### <span id = "id9">9. 用两个栈实现队列</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 232，也就是用栈实现队列。
 
-##### <span id = "id91">9.1 [ 用栈实现队列 No.232（简单）](https://leetcode-cn.com/problems/implement-queue-using-stacks/)</span>
+#### <span id = "id91">9.1 [ 用栈实现队列 No.232（简单）](https://leetcode-cn.com/problems/implement-queue-using-stacks/)</span>
 
 队列的特点是先进先出，而栈的特点是先进后出，所以用两个栈来实现队列的思路，就是在出队的时候通过两个栈来进行”倒腾“（同剑指Offer上一致）。
 
@@ -460,7 +541,7 @@ class MyQueue:
         return len(self.s1) ==0 and len(self.s2) ==0
 ```
 
-##### <span id = "id92">9.2 [用队列实现栈 No.225（简单）](https://leetcode-cn.com/problems/implement-stack-using-queues/)</span>
+#### <span id = "id92">9.2 [用队列实现栈 No.225（简单）](https://leetcode-cn.com/problems/implement-stack-using-queues/)</span>
 
 用队列来实现栈，这时候就不要用两个队列来实现了，只需要一个队列外加一个长度就可以。其思路就是，入栈的时候直接往队列里面添加就行，但是出栈的时候依次将队列里的前n-1个元素出队，依次加入到队列末尾就行，此时队列的队首就是栈顶元素。
 
