@@ -79,6 +79,8 @@ def quick_sort(nums):
 
 
 
+#### [返回目录](./README.md)
+
 ### <span id = 'id3'>3. 数组中重复的数字</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 287，也就是寻找重复数。
@@ -215,6 +217,10 @@ class Solution:
 
 <font color = blue>时间复杂度为$O(n)$，空间复杂度为$O(n)$ </font>
 
+#### [返回目录](./README.md)
+
+
+
 ### <span id = 'id4'>4. 二维数组中的查找</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 74，也就是搜索二维矩阵。
@@ -262,6 +268,10 @@ class Solution:
 > 每列的元素从上到下升序排列。
 
 这个题目和4.1是一样的解法，直接把4.1的代码复制过去就能通过。
+
+#### [返回目录](./README.md)
+
+
 
 ### <span id = 'id5'>5. 替换空格</span>
 
@@ -392,6 +402,10 @@ class Solution:
 
 <font color = blue>时间复杂度最坏为全部反转，因此平均时间复杂度为$O(n)$，空间复杂度为$O(n-m)$</font>
 
+#### [返回目录](./README.md)
+
+
+
 ### <span id = "id7">7. 重建二叉树</span>
 
 该题目在LeetCode上最相近的题目为：leetcode 105，也就是从前序与中序遍历构造二叉树。
@@ -433,6 +447,10 @@ class Solution:
         root.right = self.buildTree(inorder[idx+1:],postorder[idx:-1])
         return root
 ```
+
+#### [返回目录](./README.md)
+
+
 
 ### <span id = "id8">8. 二叉树的下一个节点</span>
 
@@ -556,7 +574,7 @@ class MyStack:
         return self.length < 1
 ```
 
-
+#### [返回目录](./README.md)
 
 
 

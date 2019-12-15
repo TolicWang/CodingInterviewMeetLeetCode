@@ -1,6 +1,6 @@
 ## 目录
 
-- [2. 排序算法](./Python.md.md/#id2)
+- [2. 排序算法](./Python.md/#id2)
   - [2.1 冒泡排序](./Python.md/#id21)
   - [2.2 选择排序](./Python.md/#id22)
   - [2.3 插入排序](./Python.md/#id23)
