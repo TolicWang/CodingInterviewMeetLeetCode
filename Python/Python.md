@@ -73,11 +73,69 @@ def quick_sort(nums):
     return quick_sort(left) + [mid] + quick_sort(right)
 ```
 
-**复杂度分析：**时间复杂度为$O(n\log{n})$，空间复杂度$O(n\log{n})$。虽然这种实现代码简单，但空间复杂度却不是最优。
+**复杂度分析：**时间复杂度为$O(n\log{n})$，空间复杂度$O(n)$。虽然这种实现代码简单，但空间复杂度却不是最优。
 
 **方法二：**
 
+**思路**：结题思路同剑指Offer上的一样，分为两步：①选择一个哨位，然后将数组分成左右两个部分，左边均小于哨位，右边均大于哨位；②递归划分左右两个部分；
 
+```python
+def Partion(nums, start, end):
+    index = (end - start + 1) // 2 + start # 选择哨位，这里每个都选择中间这个
+    nums[index], nums[end] = nums[end], nums[index]
+    small = start - 1 # 用来指向左边小于末尾元素的最后一个
+    for index in range(start, end):
+        if nums[index] < nums[end]:
+            small += 1
+            if small != index:
+                nums[small], nums[index] = nums[index], nums[small]
+    small += 1
+    nums[small], nums[end] = nums[end], nums[small]
+    return small
+
+
+def quick_sort(nums, start, end):
+    if start == end:
+        return
+    index = Partion(nums, start, end)
+    print(index, nums)
+    if index > start:
+        quick_sort(nums, start, index - 1)
+    if index < end:
+        quick_sort(nums, index + 1, end)
+
+
+if __name__ == '__main__':
+    s = [4, 6, 3, 2, 0, 1, 8]
+    quick_sort(s, 0, len(s) - 1)
+    print(s)
+```
+
+**复杂度分析**：如果待排序数组一开始就是有序的，且如果每次有选择最后一个作为哨位；此种情况下，第一轮需要将前$n-1$个数同哨位比较，由于此时的哨位为最大值，所有划分后的右边部分为空，左边部分剩下$n-1$个数；接着继续对左边的部分进行递归划分，由于数组有序且仍是最后一个为哨位，此次划分就需要进行$n-2$次比较，划分后的情况同前一次一样，因此这种情况下的时间复杂度为$(n-1)+(n-2)+\cdots +1=O(n^2)$。如果数组一开始就是有序的，且每次都选择中间位置的数作为哨位，或者数组的乱序的，但是运气好每次选择的哨位都是中位数，那么总共需要比较的次数如下：
+
+第一轮：比较$n-1$次，然后数组被划分为左右两个部分，标记为left,right；
+
+第二轮：left部分比较$\frac{n-1}{2}-1=\frac{n-3}{2}$次，然后划分为两个部分，标记为left_left，left_right
+
+​				right部分同样比较$\frac{n-3}{2}$，然后划分为两个部分，标记为right_left，right_right
+
+​				一种比较$(n-3)$次
+
+第三轮：left_left部分比较：$\frac{n-3}{4}-1=\frac{n-7}{4}$，其余部分同样，总共比较$(n-7)$次
+
+第$\log{n}$轮：也就是最后一轮，总共比较$(n-(2^{\log{n}}-1))$次
+
+因此，总的时间复杂度为：
+$$
+\begin{aligned}
+O(T)&=(n-1)+(n-3)+\cdots+(n-(2^{\log{n}}-1))\\[2ex]
+&=n\cdot\log{n}-(1+3+7+\cdots+2^{\log{n}}-1)\\[2ex]
+&=n\cdot\log{n}-\left[(2^1-1)+(2^2-1)+\cdots+(2^{\log{n}}-1)\right]\\[2ex]
+&=n\cdot\log{n}-\left[\frac{2\cdot(1-2^{\log{n}})}{1-2}-\log{n}\right]\\[2ex]
+&=n\cdot\log{n}+\log(n)+2-2\cdot n
+\end{aligned}
+$$
+所以时间复杂度最好为$O(n\cdot\log{n})$，最差为$O(n^2)$，平均为$O(n\cdot\log{n})$，空间复杂度同最好情况下为递归的深度$O(\log n)$。
 
 #### [返回目录](./README.md)
 
@@ -575,6 +633,10 @@ class MyStack:
 ```
 
 #### [返回目录](./README.md)
+
+### <span id = "id10">10. 斐波那契额数列</span>
+
+
 
 
 
