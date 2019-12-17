@@ -636,6 +636,210 @@ class MyStack:
 
 ### <span id = "id10">10. 斐波那契额数列</span>
 
+该题目在LeetCode上对应的题目为：leetcode 509。
+
+#### <span id = "id101">10.1 [斐波那契数 No.509（简单）](https://leetcode-cn.com/problems/fibonacci-number/)</span>
+
+对于求解斐波那契数一般来说有两种，第一种就是自上而下的递归，第二种就是自下而上的动态规划。
+
+**方法一：**
+
+通过递归来求解。
+
+```python
+class Solution:
+    def fib(self, N: int) -> int:
+        if N == 0:
+            return 0
+        if N == 1:
+            return 1
+        return self.fib(N-1) + self.fib(N-2)
+```
+
+**复杂度分析：**可以看出，其时间复杂度和空间复杂度均主要花费在递归调用上，因此其空间复杂度为$O(n)$；而由于才用递归的方法会反复计算同一个数的斐波那契数多次，故其时间复杂度高达$2^n-1=O(2^n)$。
+
+**方法二：**
+
+通过动态规划来求解，也就是从f[2]开始，按公式一直计算到f[n]。
+
+```python
+class Solution:
+    def fib(self, N: int) -> int:
+        # 状态转移方程：f[i] = f[i-1] + f[i-2]，其中f[i]表示第i个数斐波那契数
+        if N < 2:
+            return 
+        f = (N+1) *[0]
+        f[0],f[1] = 0,1
+        for i in range(2,N+1):
+            f[i] = f[i-1]+f[i-2]
+        return f[-1]
+```
+
+**复杂度分析：**相比较来说，使用动态规划的话其空间复杂度主要是花费在保存历史结果上，而时间复杂度也是花费在每个斐波那契数的计算上，且每个数都只计算了一次，因此其时间复杂度和空间复杂度均为$O(n)$。
+
+#### <span id = "id102">10.2 [爬楼梯 No.70（简单）](https://leetcode-cn.com/problems/climbing-stairs/)</span>
+
+爬楼梯这个题对应的也就是青蛙跳台阶的问题，和求解斐波那契数一样，同样也可以按照递归和动态规划来求解。
+
+**方法一：**
+
+通过自上而下递归来求解。假设下载有n个台阶需要你跳上去，那么当你跳最后一次的时候，你可能是通过一步跳上去的，同时你也可能是通过跳两步跳上去的，因此f[n] = f[n-1] + f[n-2]。
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 2:
+            return n
+        return self.climbStairs(n-1) + self.climbStairs(n-2)
+```
+
+**复杂度分析：**其时间和空间复杂度的分析和结果均10.1方法一，所以就不再赘述。遗憾的是虽然代码正确，但由于其时间复杂度太高，这个代码在leetcode上自然是无法通过的，超时。所以也就只能用下面一种方法。
+
+**方法二：**
+
+通过自下而上的动态规划来求解。也就是你要算n阶楼梯有多少种可能，那我就从有3阶开始算，一直重下往上根据公式算到第n阶。
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 2:
+            return n
+        f = [0] *(n+1)
+        f[1],f[2] = 1,2
+        for i in range(3,n+1):
+            f[i] = f[i-1] + f[i-2]
+        return f[-1]
+```
+
+**复杂度分析：**其时间和空间复杂度的分析和结果均同上10.1方法二，所以就不再赘述。
+
+#### <span id = "id103">10.3 [跳跃游戏 No.55（中等）](https://leetcode-cn.com/problems/jump-game/)</span>
+
+> 给定一个非负整数数组，你最初位于数组的第一个位置。
+>
+> 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+>
+> 判断你是否能够到达最后一个位置。
+>
+> ```
+> 输入: [2,3,1,1,4]
+> 输出: true
+> 解释: 我们可以先跳 1 步，从位置 0 到达 位置 1, 然后再从位置 1 跳 3 步到达最后一个位置。
+> ```
+
+这个题目也是一个关于跳的题，不过它计算的是能不能跳到最后一个台阶。
+
+其解题的思路是用一个变量maxs来表示当前能跳跃的最大台阶数，每跳一次减一，然后和下一个石头上的数两者取最大的一个，如果能跳到倒数第二个石头，且maxs不为零，那么就表示能够跳到最后一个石头。
+
+```python
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        maxs = 0
+        for i in range(len(nums)-1):
+            maxs -= 1
+            maxs = max(maxs,nums[i])
+            if maxs == 0:
+                return False
+        return True
+```
+
+**复杂度分析：**由于代码并不复杂，所以一眼可以看出其时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
+#### [返回目录](./README.md)
+
+### <span id = "id11">11. 旋转数组的最小值</span>
+
+该题目在LeetCode上对应的题目为：leetcode 153。
+
+#### <span id = "id111">11.1 [寻找旋转排序数组中的最小值 No.153（中等）](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/)</span>
+
+这个题的解题思路同剑指Offer上的一致，采用的是二分查找，其关键就是判断最小值位于前后哪个部分的问题。
+
+```python
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 2:
+            return nums[0]
+        left,right = 0,n-1
+        mid_idx = left
+        while nums[left] >= nums[right]:
+            if right - left == 1:
+                mid_idx = right
+                break
+            mid_idx = (left + right) // 2
+            if nums[mid_idx] >= nums[left]:# 如果中间值大>=左边值，则前面肯定递增，最小值在后
+                left = mid_idx
+            elif nums[mid_idx] <= nums[right]:#如果中间值<=右边值，则后面有序，最小值在前边
+                right = mid_idx
+        return nums[mid_idx]
+```
+
+上面这段代码没有考虑书上列举的[1,0,1,1,1]这种情况也能通过，一开始以为是国内版leetcode-cn.com的bug，切换国外leetcode.com也能通过。看来要么是leetcode上的递增指的是严格递增，要么就是bug了。完整如下：
+
+```python
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        def minInOrder(nums, left, right):
+            min_idx = left
+            for i in range(left, right + 1):
+                if nums[i] < nums[min_idx]:
+                    min_idx = i
+            return min_idx   
+
+        n = len(nums)
+        if n < 2:
+            return nums[0]
+        left,right = 0,n-1
+        mid_idx = left
+        while nums[left] >= nums[right]:
+            if right - left == 1:
+                mid_idx = right
+                break
+            mid_idx = (left + right) // 2
+            if nums[left] == nums[mid_idx] == nums[right]:
+                mid_idx = minInOrder(nums, left, right)
+                break
+            elif nums[mid_idx] >= nums[left]:
+                left = mid_idx
+            elif nums[mid_idx] <= nums[right]:
+                right = mid_idx
+        return nums[mid_idx]
+```
+
+**复杂度分析：**可以看出，最好情况顺序时的时间复杂度为$O(1)$，最差情况下如[1,0,1,1,1]时为$o(n)$，其次一般情况下为$O(\log{n})$，则平均时间复杂度为$O(\log{n})$吗？（笔者还真不确定）。空间复杂度为$O(1)$。
+
+#### <span id = "id112">11.2 [寻找旋转排序数组中的最小值 II No.154（困难）](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/)</span>
+
+> 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+>
+> ( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
+>
+> 请找出其中最小的元素。
+>
+> 注意数组中可能存在重复的元素，如：
+>
+> ```
+> 输入: [2,2,2,0,1]
+> 输出: 0
+> ```
+
+当看完这个题目的要求，突然就有点”踏破铁鞋无觅处，得来全不费工夫的感觉“。这就是第153题的加强版，也就是考虑了剑指Offer上的特殊情况，不再赘述。下面再来看一道类似思路题目。
+
+#### <span id = "id113">11.3 [搜索旋转排序数组 No.33（中等）](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/)</span>
+
+
+
+
+
+
+
+
+
+#### [返回目录](./README.md)
+
+
+
 
 
 
