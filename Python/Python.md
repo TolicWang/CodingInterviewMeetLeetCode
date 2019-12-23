@@ -828,15 +828,168 @@ class Solution:
 
 #### <span id = "id113">11.3 [搜索旋转排序数组 No.33（中等）](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/)</span>
 
+> 假设按照升序排序的数组在预先未知的某个点上进行了旋转。搜索一个给定的目标值，如果数组中存在这个目标值，则返回它的索引，否则返回 -1 。你可以假设数组中不存在重复的元素。
+>
+> 示例 1:
+>
+> 输入: nums = [4,5,6,7,0,1,2], target = 0
+> 输出: 4
+> 示例 2:
+>
+> 输入: nums = [4,5,6,7,0,1,2], target = 3
+> 输出: -1
 
+可以看到，题目中特意提到了不存在重复元素。解决这个题是思路也会用到上面的想法，根据中间值与两边值的关系判断出哪一边是有序，然后再判断目标值属于那一段中，然后再迭代。
 
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        n = len(nums)
+        if n < 1:
+            return -1
+        if n == 1:
+            if nums[0] == target:
+                return 0
+            else:
+                return -1
+        left,right = 0,n-1
+        while left < right :
+            idx = (left + right) // 2
+            if nums[idx] == target:
+                return idx
+            if nums[idx] >= nums[left]: # 说明左边有序
+                if nums[left] <= target and target < nums[idx]: # 且target在左边
+                    right = idx
+                else:
+                    left = idx
+            elif nums[idx] <= nums[right]: #说明右边有序
+                if nums[idx] <= target and target <= nums[right]:# 且target在右边
+                    left = idx
+                else:
+                    right = idx
+            if right - left == 1:
+                if nums[left] == target:
+                    return left
+                if nums[right] == target:
+                    return right
+                else:
+                    return - 1
+```
 
+**复杂度分析：**时间复杂度为$O(\log{n})$，空间复杂度为$O(1)$。
 
+#### <span id = "id114">11.4 [搜索旋转排序数组 II No.81（中等）](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/)</span>
 
+> 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+>
+> ( 例如，数组 [0,0,1,2,2,5,6] 可能变为 [2,5,6,0,0,1,2] )。
+>
+> 编写一个函数来判断给定的目标值是否存在于数组中。若存在返回 true，否则返回 false。
+>
+> 示例 1:
+>
+> 输入: nums = [2,5,6,0,0,1,2], target = 0
+> 输出: true
 
+这个题同上一个题的区别就在于81题允许存在重复，因此也需要像154题一样加入一个顺序查找。
 
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        def minInOrder(nums, left, right,target):
+            for i in range(left, right + 1):
+                if nums[i] == target:
+                    return True
+            return False
+
+        n = len(nums)
+        if n < 1:
+            return False
+        if n == 1:
+            if nums[0] == target:
+                return True
+            else:
+                return False
+                
+        left,right = 0,n-1
+        while left < right:
+            idx = (left + right) // 2
+            if nums[idx] == target:
+                return True
+            if nums[left] == nums[idx] == nums[right]:
+                return minInOrder(nums,left,right,target)
+            if nums[idx] >= nums[left]:# 说明左边有序
+                if nums[left] <= target and target < nums[idx]:# 且target在左边
+                    right = idx
+                else:
+                    left = idx
+            elif nums[idx] <= nums[right]:# 说明右边有序
+                if nums[idx] < target and target <= nums[right]:# 且target在右边
+                    left = idx
+                else:
+                    right = idx
+            if right - left == 1:
+                if nums[left] == target or nums[right] == target:
+                    return True
+                else:
+                    return False
+
+```
+
+**复杂度分析：**时间复杂度为$O(\log{n})$，空间复杂度为$O(1)$
 
 #### [返回目录](./README.md)
+
+### <span id = "id12">12. 矩阵中的路径</span>
+
+### <span id = "id13">13. 机器人的运动范围</span>
+
+### <span id = "id14">14. 减绳子</span>
+
+该题目在LeetCode上没有找到对应的题目为，可以用[牛客网](https://www.nowcoder.com/practice/57d85990ba5b440ab888fc72b0751bf8?tpId=13&tqId=33257&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)来代替。
+
+这个题的结题思路同剑指Offer一样都是采用动态规划来求解。由于$f(n) = max(f(i)*f(n-i))$，而$f(i) = max(f(j)*f(i-j))$，即每个问题又被划分成更下的子问题，所以我们需要自下而上的进行求解。
+
+```python
+class Solution:
+    def cutRope(self, number):
+        # write code here
+        # f(n) = max(f(1)*f(n-1),f(2)*f(n-2),...)
+        if number == 2:
+            return 1
+        if number == 3:
+            return 2
+        f = [0] * (number+1)
+        f[1],f[2],f[3] = 1,2,3
+        for i in range(4,number+1):
+            for j in range(1,i//2+1):
+                f[i] = max(f[i],f[i-j]*f[j])
+        return f[-1]
+```
+
+**复杂度分析：**其循环的执行次数为$\frac{1}{4}(n^2-1)$，因此其时间复杂度为$O(n^2)$；空间复杂度为$O(n)$，即整个`f`列表的空间。
+
+### <span id = "id15">15. 二进制中1的个数</span>
+
+这个题在leetcode中对应的题目为：leetcode 191。
+
+#### <span id = "id151"> 15.1 [位1的个数 No.191（简单）](https://leetcode-cn.com/problems/number-of-1-bits/)</span>
+
+```python
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        count = 0
+        while n&0xffffffff != 0:
+            count += 1
+            n = n & (n-1)
+        return count
+```
+
+**复杂度分析：**从代码可以看出，时间复杂度为$O(count)$，即$O(1)$，空间复杂度也为$O(1)$
+
+#### [返回目录](./README.md)
+
+
 
 
 
