@@ -973,7 +973,17 @@ class Solution:
 
 这个题在leetcode中对应的题目为：leetcode 191。
 
-#### <span id = "id151"> 15.1 [位1的个数 No.191（简单）](https://leetcode-cn.com/problems/number-of-1-bits/)</span>
+#### <span id = "id151">15.1 [位1的个数 No.191（简单）](https://leetcode-cn.com/problems/number-of-1-bits/)</span>
+
+> 编写一个函数，输入是一个无符号整数，返回其二进制表达式中数字位数为 ‘1’ 的个数（也被称为汉明重量）。
+>
+> 示例 1：
+>
+> 输入：00000000000000000000000000001011
+> 输出：3
+> 解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 '1'。
+
+这个题与书中的区别就是这儿直接输入的就是二进制形式。
 
 ```python
 class Solution:
@@ -987,11 +997,59 @@ class Solution:
 
 **复杂度分析：**从代码可以看出，时间复杂度为$O(count)$，即$O(1)$，空间复杂度也为$O(1)$
 
+### <span id = "id16">16. 数值的整数次方</span>
+
+该题目在leetcode中对应的题目为：leetcode 50.
+
+#### <span id = "id161">16.1 [Pow(x, n) No.50（中等）](https://leetcode-cn.com/problems/powx-n/)</span>
+
+> 实现 [pow(*x*, *n*)](https://www.cplusplus.com/reference/valarray/pow/) ，即计算 x 的 n 次幂函数。
+>
+> **示例 1:**
+>
+> ```python
+> 输入: 2.00000, 10
+> 输出: 1024.00000
+> ```
+
+解题思路了完全同剑指Offer一致。
+
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        
+        def power(base,exp):
+            if exp == 0:
+                return 1
+            if exp == 1:
+                return base
+            result = power(base,exp>>1)
+            result *= result
+            if exp & 0x1 == 1: # 判断exp是否为奇数
+                result *= base
+            return result
+        
+        if x == 0 or x == 1:
+            return x
+        if n == 0:
+            return 1
+        sign = True
+        if n < 0:
+            sign = False
+            n *= -1
+        result = power(x,n)
+        return result if sign > 0 else 1/result
+```
+
+**复杂度分析：** 时间复杂度为$O(\log{n})$，空间复杂度也为$O(\log{n})$，因为每递归一次`power`都会开辟$O(1)$的空间。
+
 #### [返回目录](./README.md)
 
+### <span id = "id17">17. 打印从1到最大的n位数</span>
 
 
 
+#### [返回目录](./README.md)
 
 
 
