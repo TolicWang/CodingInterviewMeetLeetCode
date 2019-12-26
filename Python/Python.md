@@ -1047,6 +1047,88 @@ class Solution:
 
 ### <span id = "id17">17. 打印从1到最大的n位数</span>
 
+### <span id = "id18">18. 删除链表的节点</span>
+
+这个题在leetcode中完全对应的题目应该没有，只有一个类似的也就是leetcode 237。与原书中唯一的差别就是书中给出了头节点，而237中没有给出。
+
+#### <span id = "id181">18.1 [删除链表中的节点 No.237（简单）](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)</span>
+
+> 请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
+>
+> 示例 1:
+>
+> 输入: head = [4,5,1,9], node = 5
+> 输出: [4,1,9]
+> 解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+
+解题方法同书上一致，将下一个节点的值赋值到当前要删除的节点，然后将当前节点链接到下个节点所指向的地址。
+
+```python
+class Solution:
+    def deleteNode(self, node):
+        """
+        :type node: ListNode
+        :rtype: void Do not return anything, modify node in-place instead.
+        """
+        node.val = node.next.val
+        node.next = node.next.next
+```
+
+看起要比书上的情况简单很多，如果是按照书上的情况，应该如下：
+
+```python
+def deleteNode(head,node):
+    if node.next:# 删除节点不是尾节点
+        node.val = node.next.val
+        tmp = node.next
+        node.next = node.next.next
+        del tmp
+    elif head == node:# 删除节点是头节点且只有一个节点
+        tmp = head
+        head = None
+        del tmp
+    else:#删除为尾节点
+        p = head
+        while p.next != node:
+            p = p.next
+        p.next = None
+        del node
+```
+
+**复杂度分析：**时间复杂度最好情况下为$O(1)$，最坏情况下为$O(n)$，因此平均时间复杂度为$[(n-1)\cdot O(1)+O(n)]/n=O(1)$，空间复杂度为$O(1)$
+
+#### <span id = "id182">18.2 [删除排序链表中的重复元素 No.82（简单）](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)</span>
+
+> 给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+>
+> **示例 1:**
+>
+> ```python
+> 输入: 1->1->2
+> 输出: 1->2
+> ```
+
+由于是已经排序好的，所以只需要一次遍历即可去掉重复的部分。
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        post,pre = head,head.next
+        while pre:
+            if pre.val == post.val:
+                pre = pre.next
+            else:
+                post.next = pre
+                post = pre
+                pre = pre.next
+        post.next = pre
+        return head 
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
 
 
 #### [返回目录](./README.md)
