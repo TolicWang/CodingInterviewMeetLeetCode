@@ -1097,7 +1097,7 @@ def deleteNode(head,node):
 
 **复杂度分析：**时间复杂度最好情况下为$O(1)$，最坏情况下为$O(n)$，因此平均时间复杂度为$[(n-1)\cdot O(1)+O(n)]/n=O(1)$，空间复杂度为$O(1)$
 
-#### <span id = "id182">18.2 [删除排序链表中的重复元素 No.82（简单）](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)</span>
+#### <span id = "id182">18.2 [删除排序链表中的重复元素 No.83（简单）](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)</span>
 
 > 给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
 >
@@ -1129,11 +1129,144 @@ class Solution:
 
 **复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
 
+#### <span id = "id183">18.3 [删除排序链表中的重复元素 II No.82（中等）](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)</span>
 
+> 给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
+>
+> 示例 1:
+>
+> 输入: 1->2->3->3->4->4->5
+> 输出: 1->2->5
+
+这个题与上一个题的区别就是，这个题是去掉所有重复的节点。同时，在处理这种删除节点的题，为了防止在头节点就出现重复而需要考虑这种特殊情况，一个好用的方法就是在头节点之前再插入一个节点，但是不能随机，因为有可能恰好与头节点重复导致误删，所以设其为比头节点小1即可。
+
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        # 以 1-->2-->3-->3-->4-->4-->5-->5为例
+        # 添加一个节点: 0-->1-->2-->3-->3-->4-->4-->5-->5
+        node = ListNode(head.val-1)
+        node.next = head
+        post,pre = node,head
+        is_del = False
+        while pre.next:
+            if pre.val == pre.next.val:# 来判断pre 和pre.next指向的值是否重复
+                is_del = True # 标记是否有重复的节点
+                pre = pre.next
+            else:
+                if is_del:
+                    post.next = pre.next
+                    pre = pre.next
+                    is_del = False
+                else:
+                    post = pre
+                    pre = pre.next
+        if is_del:# 排除最后若干个数仍旧相等(5，5)这种情况
+            post.next = None
+        return node.next    
+```
+
+**复杂度分析：**由代码易知，时间复杂度为$O(n)$，空间复杂度为$O(1)$。
 
 #### [返回目录](./README.md)
 
+### <span id = "id19">19. 正则表达式</span>
 
+### <span id = "id20">20. 表示数值的字符串</span>
+
+### <span id = "id21">21. 调整数组顺序使奇数位于偶数前面</span>
+
+这个题在leetcode中对应的题目是leetcode 905，只是刚好相反，偶数在前面，奇数在后面。
+
+#### <span id = "id211">21.1 [按奇偶排序数组 No.905（简单）](https://leetcode-cn.com/problems/sort-array-by-parity/)</span>
+
+解题思路就完全类似于二分查找，分别从左右开始查找，当左右都满足条件时，左右交换。
+
+```python
+class Solution:
+    def sortArrayByParity(self, A: List[int]) -> List[int]:
+        n = len(A)
+        if n < 2:
+            return A
+        left,right = 0,n-1
+        while left < right:
+            while left < right and A[left] & 0x1 == 0:# 左边满足条件，停止
+                left += 1
+            while left < right and A[right] & 0x1 == 1:# 右边边满足条件，停止
+                right -= 1
+            A[left],A[right] = A[right],A[left]# 交换
+        return A
+```
+
+**复杂度分析：**易知其时间复杂度为$O(\log{n})$，空间复杂度为$O(1)$
+
+### <span id = "id22">22. 链表中倒数第K个节点</span>
+
+这个题在leetcode中没有完全对应的题目，但leetcode 19最为相似，需要删除第k个节点。
+
+#### <span id = "id221">22.1 [删除链表的倒数第N个节点 No.19（中等）](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)</span>
+
+> 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+>
+> 示例：
+>
+> 给定一个链表: 1->2->3->4->5, 和 n = 2.
+>
+> 当删除了倒数第二个节点后，链表变为 1->2->3->5.
+> 说明：
+>
+> 给定的 n 保证是有效的
+
+解题思路是，一开始定义两个指针指向头节点，pre指针先走k步（此时前后两个指针就相隔k步），然后两个指针同时走，当前面指针的下一个为空时，后面指针指向的就是倒数第k个。
+
+```python
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        if not head or n == 0:
+            return head
+        node = ListNode(0)
+        node.next = head
+        post,pre = node,node
+        for _ in range(n):
+            pre = pre.next
+        while pre.next:
+            post = post.next
+            pre = pre.next
+        post.next = post.next.next
+        return node.next
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
+#### <span id = "id222">22.2 [链表的中间结点 No.876（简单）](https://leetcode-cn.com/problems/middle-of-the-linked-list/)</span>
+
+> 给定一个带有头结点 `head` 的非空单链表，返回链表的中间结点。
+>
+> 如果有两个中间结点，则返回第二个中间结点。
+
+解题思路为，定义两个指针，pre一次走两步，post一次走一步。当pre的下一个节点为空时，则一共有奇数个节点，post指向的就是中间节点；当pre的下一个的下一个节点为空时，则一种由偶数个节点，post.next指向的就是第二个中间节点。其实换个出题方式，判断一个链表有奇数个节点还是偶数个就可以用这种方法来判断。
+
+```python
+class Solution:
+    def middleNode(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        post,pre = head,head
+        while True:
+            pre = pre.next
+            if not pre:
+                return post# 奇数个
+            pre = pre.next
+            if not pre:# 偶数个
+                return post.next
+            post = post.next
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
+#### [返回目录](./README.md)
 
 
 
