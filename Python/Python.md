@@ -1268,6 +1268,130 @@ class Solution:
 
 #### [返回目录](./README.md)
 
+### <span id = "id23">23. 链表中环的入口节点</span>
+
+从题目来看可以将这个题分成两个步骤：第一个是先判断存不存在环；第二个是如果存在则返回入口节点。
+
+#### <span id = "id231">23.1 [环形链表 No.141（环形链表）](https://leetcode-cn.com/problems/linked-list-cycle/)</span>
+
+> 给定一个链表，判断链表中是否有环。
+>
+> 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+>
+
+解题思路同书上一样定义两个指针（post和pre），pre一次走两步，post一次走一步，如果`pre.next == post`则存在环形。
+
+```python
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        if not head or not head.next:
+            return False
+        post,pre = head,head.next
+        while pre:
+            if pre.next == post:
+                return True
+            pre = pre.next
+            if not pre:
+                return False
+            pre = pre.next
+            post = post.next
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
+#### <span id = "id232">23.2 [环形链表 II No.142（中等）](https://leetcode-cn.com/problems/linked-list-cycle-ii/)</span>
+
+> 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+>
+> 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+>
+> 说明：不允许修改给定的链表。
+
+解题思路就是前面说到的，①先判断环；②然后判断环中的节点个数`c`；③定义两个指针同时指向头节点，`pre`先走`c-1`步，然后`pre,post`一起走，当`pre.next == post`的时候，`post`就是需要返回的节点；
+
+```python
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return None
+        post,pre = head,head.next
+        while pre:# 判断是否存在环
+            if pre.next == post:
+                break
+            pre = pre.next
+            if not pre:
+                return None
+            pre = pre.next
+            post = post.next
+        if not pre:# 判断跳出循环是否为无环情况
+            return None
+
+        c = 2 # 存在环则至少有两个节点
+        while post.next != pre:# 判断环中的节点
+            c += 1
+            post = post.next
+        
+        post,pre = head,head
+        for i in range(c-1):
+            pre = pre.next
+
+        while pre.next != post:
+            post = post.next
+            pre = pre.next
+        return post
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
+### <span id = "id24">24. 反转链表</span>
+
+#### <span id = "id241">24.1 [反转链表 No.206（简单）](https://leetcode-cn.com/problems/reverse-linked-list/)</span>
+
+> 反转一个单链表。
+>
+> **示例:**
+>
+> ```python
+> 输入: 1->2->3->4->5->NULL
+> 输出: 5->4->3->2->1->NULL
+> ```
+
+这个题常见的做法就是通过递归来完成。
+
+```python
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        new_list = self.reverseList(head.next)
+        t = head.next# 递归到最深层时，head指向的是倒数第二个节点，head.next就是最后一个节点
+        t.head = head
+        head.next = None
+        return new_list
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度也为$O(n)$
+
+非递归方式
+
+```python
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        new_list,node,post = None,head,None
+        while node:
+            pre = node.next
+            if not pre:
+                new_list = node
+            node.next = post
+            post = node
+            node = pre
+        return new_list
+```
+
+**复杂度分析：**时间复杂度为$O(n)$，空间复杂度为$O(1)$
+
+#### [返回目录](./README.md)
+
 
 
 
